@@ -505,6 +505,17 @@ function downloadImage() {
   };
   img.src = userPhoto;
 }
+handle.addEventListener('touchstart', e => {
+  e.preventDefault(); // This is crucial
+  startResize(e, handle);
+}, { passive: false });
+function onMove(e) {
+  if (!isResizing) return;
+  e.preventDefault(); // Prevent scrolling while resizing
+  // ... rest of your logic
+}
+const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
 
 
-</script>  console.log("Preparing to download image");
+</script>
