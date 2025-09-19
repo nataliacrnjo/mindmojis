@@ -389,6 +389,75 @@ document.addEventListener('touchend', function() {
 
   document.addEventListener('mouseup', () => isResizing = false);
 }
+// Handle both mouse and touch start
+function startResize(e, handle) {
+  e.stopPropagation();
+  isResizing = true;
+  currentCorner = handle.dataset.corner;
+
+  const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+  const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
+
+  startX = clientX;
+  startY = clientY;
+  startW = sticker.offsetWidth;
+  startH = sticker.offsetHeight;
+  startLeft = sticker.offsetLeft;
+  startTop = sticker.offsetTop;
+}
+
+sticker.querySelectorAll('.resize-handle').forEach(handle => {
+  handle.addEventListener('mousedown', e => startResize(e, handle));
+  handle.addEventListener('touchstart', e => startResize(e, handle), { passive: false });
+});
+
+// Handle both mouse and touch move
+function onMove(e) {
+  if (!isResizing) return;
+
+  const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+  const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
+
+  let dx = clientX - startX;
+  let dy = clientY - startY;
+  let newW = startW, newH = startH, newLeft = startLeft, newTop = startTop;
+
+  switch (currentCorner) {
+    case 'tl':
+      newW = Math.max(40, startW - dx);
+      newH = Math.max(40, startH - dy);
+      newLeft = startLeft + dx;
+      newTop = startTop + dy;
+      break;
+    case 'tr':
+      newW = Math.max(40, startW + dx);
+      newH = Math.max(40, startH - dy);
+      newTop = startTop + dy;
+      break;
+    case 'bl':
+      newW = Math.max(40, startW - dx);
+      newH = Math.max(40, startH + dy);
+      newLeft = startLeft + dx;
+      break;
+    case 'br':
+      newW = Math.max(40, startW + dx);
+      newH = Math.max(40, startH + dy);
+      break;
+  }
+
+  sticker.style.width = newW + 'px';
+  sticker.style.height = newH + 'px';
+  sticker.style.left = newLeft + 'px';
+  sticker.style.top = newTop + 'px';
+}
+
+document.addEventListener('mousemove', onMove);
+document.addEventListener('touchmove', onMove, { passive: false });
+
+// End resize
+document.addEventListener('mouseup', () => isResizing = false);
+document.addEventListener('touchend', () => isResizing = false);
+
 
 
   
@@ -438,4 +507,4 @@ function downloadImage() {
 }
 
 
-</script>
+</script>  console.log("Preparing to download image");
