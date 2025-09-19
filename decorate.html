@@ -55,8 +55,8 @@
 
 /* Tab content container */
 .tab-content {
-  flex: none;              /* allow fixed height */
-  overflow-y: hidden;      /* outer container hides scroll */
+  flex: 1 1 auto;
+  overflow-y: hidden;
 }
 
 /* Stickers grid */
@@ -64,10 +64,10 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
-
-  /* Show 4 rows (8 stickers) */
-  height: calc((100px + 10px) * 4); /* sticker height + gap * 4 rows */
-  overflow-y: auto; /* scroll if more stickers */
+  flex: 1 1 auto;           /* allow to grow and fill sidebar */
+  overflow-y: auto;         /* scroll if more stickers */
+  height: auto;             /* remove fixed height */
+  max-height: 100%;         /* don't overflow sidebar */
 }
 
 .single-choice img.sticker {
@@ -198,20 +198,11 @@
     <div id="stickerLayer"></div>
 
     </div>
-    <button id="downloadBtn" onclick="downloadImage()" style="
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  z-index: 100;
-  padding: 10px 20px;
-  background: #3286f2;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-">
+    <button id="downloadBtn" onclick="downloadImage()" class="icon-btn">
+  <img src="download.svg" alt="Download" style="width:24px;height:24px;vertical-align:middle;">
   Download
 </button>
+  
 
   </div>
 </body>
