@@ -93,9 +93,14 @@
 #canvasWrapper {
   position: relative;
   width: 80%;
-  aspect-ratio: 3 / 2; /* Optional: keeps canvas proportional */
+  aspect-ratio: 3 / 2;
   max-width: 800px;
+  background-image: url('FRAME-01.svg');
+  background-size: cover; /* or 'contain' if your SVG has padding */
+  background-position: center;
+  background-repeat: no-repeat;
 }
+
 #canvasFrame {
   position: absolute;
   top: 0; left: 0;
@@ -108,10 +113,9 @@
 #canvas {
   width: 100%;
   height: 100%;
-  border: 4px solid #fff12d;
-  border-radius: 16px;
   background: #eee;
   display: block;
+  z-index: 1;
 }
 
 #stickerLayer {
@@ -245,8 +249,11 @@
       <!-- Right canvas -->
       <div class="wrap-right">
   <div id="canvasWrapper">
-    <canvas id="canvas" width="900" height="600"></canvas>
-    <div id="stickerLayer"></div>
+  <canvas id="canvas" width="900" height="600"></canvas>
+  <div id="stickerLayer"></div>
+  <img id="canvasFrame" src="FRAME-01.svg" alt="Polaroid Frame">
+</div>
+
 <img id="canvasFrame" src="FRAME-01.svg" alt="Frame" style="
     position:absolute;
     top:0; left:0; width:100%; height:100%;
