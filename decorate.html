@@ -96,6 +96,14 @@
   aspect-ratio: 3 / 2; /* Optional: keeps canvas proportional */
   max-width: 800px;
 }
+#canvasFrame {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
 
 #canvas {
   width: 100%;
@@ -114,6 +122,22 @@
   height: 100%;
   pointer-events: none;
   z-index: 2;
+}
+#downloadBtn.icon-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: inline-block;
+  cursor: pointer;
+}
+
+#downloadBtn img {
+  width: 64px;
+  height: 64px;
+  display: block;
 }
 
 /* Draggable stickers */
@@ -137,8 +161,26 @@
   border-radius: 3px;
   z-index: 3;
 }
+.icon-btn {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: inherit !important;
+  padding: 0 !important;
+  margin-top: 10px;
+  display: inline-block;
+  cursor: pointer;
+}
+.tab-btn img {
+  margin-right: 6px;
+}
 
-
+.download-btn-container {
+  position: absolute;
+  top: 10px;
+  right: 40px;
+  z-index: 10;
+}
 .top-left { top: 0; left: 0; cursor: nwse-resize; }
 .top-right { top: 0; right: 0; cursor: nesw-resize; }
 .bottom-left { bottom: 0; left: 0; cursor: nesw-resize; }
@@ -156,8 +198,8 @@
       <div class="wrap-left">
         <!-- Tabs -->
         <div class="tab-header">
-          <button class="tab-btn active" data-target="stickers">Stickers</button>
-          <button class="tab-btn" data-target="text">Text</button>
+          <button class="tab-btn active" data-target="stickers" style="background:transparent; border:none; box-shadow:none; padding:0; margin-top:10px;">  <img src="buttons-09.svg" alt="Stickers"> </button>
+          <button class="tab-btn" data-target="text" style="background:transparent; border:none; box-shadow:none; padding:0; margin-top:10px;"> <img src="buttons-10.svg" alt="Texts"> </button>
         </div>
 
         <!-- Tab content -->
@@ -190,19 +232,30 @@
           </div>
         </div>
       </div>
+<div class="wrap-right">
+  <!-- Download button container -->
+  <div class="download-btn-container">
+    <button id="downloadBtn" onclick="downloadImage()" class="icon-btn">
+      <img src="buttons-08.svg" alt="Download" style="width:90px; height:64px; display:block;">
+    </button>
+    <div id="qrCodeContainer" style="margin-top: 20px;"></div>
 
+
+  </div>
       <!-- Right canvas -->
       <div class="wrap-right">
   <div id="canvasWrapper">
     <canvas id="canvas" width="900" height="600"></canvas>
     <div id="stickerLayer"></div>
+<img id="canvasFrame" src="FRAME-01.svg" alt="Frame" style="
+    position:absolute;
+    top:0; left:0; width:100%; height:100%;
+    pointer-events:none;
+    z-index:3;">
+</div>
+  <div id="qrCodeContainer" style="margin-top: 20px;"></div>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 
-    </div>
-    <button id="downloadBtn" onclick="downloadImage()" class="icon-btn">
-  <img src="download.svg" alt="Download" style="width:24px;height:24px;vertical-align:middle;">
-  Download
-</button>
-  
 
   </div>
 </body>
@@ -412,6 +465,17 @@ function downloadImage() {
     link.download = 'decorated-photo.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
+    
+    
+// Generate QR code
+    const qrContainer = document.getElementById('qrCodeContainer');
+    if (qrContainer) {
+      qrContainer.innerHTML = ''; // Clear previous QR
+      QRCode.toCanvas(qrContainer, dataURL, function (error) {
+        if (error) console.error(error);
+        else console.log('QR code generated!');
+      });
+    }
   };
   img.src = userPhoto;
 }
